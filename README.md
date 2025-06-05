@@ -106,6 +106,13 @@ Start the dev server
 $ npm start
 ```
 
+Build (/dist)
+
+```sh
+$ npm run build
+```
+
+
 ## License
 
 BSD 3-Clause

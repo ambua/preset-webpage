@@ -6,7 +6,7 @@ import panels from './panels';
 export type PluginOptions = {
   /**
    * Which blocks to add.
-   * @default ['link-block', 'quote', 'text-basic']
+   * @default ['link-block', 'quote', 'text-basic', 'Adrian', 'section']
    */
   blocks?: string[];
 
@@ -72,7 +72,7 @@ export type RequiredPluginOptions = Required<PluginOptions>;
 
 const plugin: Plugin<PluginOptions> = (editor, opts: Partial<PluginOptions> = {}) => {
   const config: RequiredPluginOptions = {
-    blocks: ['link-block', 'quote', 'text-basic'],
+    blocks: ['link-block', 'quote', 'text-basic', 'Adrian', 'section'],
     block: () => ({}),
     modalImportTitle: 'Import',
     modalImportButton: 'Import',
