@@ -2,6 +2,7 @@ import type { Editor, Plugin } from 'grapesjs';
 import blocks from './blocks';
 import commands from './commands';
 import panels from './panels';
+import { GrapesJsCreator } from './GrapesJsCreator';
 
 export type PluginOptions = {
   /**
@@ -127,6 +128,9 @@ const plugin: Plugin<PluginOptions> = (editor, opts: Partial<PluginOptions> = {}
 
   // Load panels
   panels(editor, config);
+
+  const creator = new GrapesJsCreator(editor);
+  creator.setupEditor();
 }
 
 export default plugin;
