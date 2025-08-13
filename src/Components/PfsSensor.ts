@@ -1,11 +1,14 @@
 import { Editor } from "grapesjs";
 import { EditorSetupable } from "../Common/EditorSetupable";
+import { PlcVariableTrait } from "../Traits/PlcVariableTrait";
 
 export class PfsSensor implements EditorSetupable {
 
 
 
     editor: Editor;
+    private readonly plcVariableTrait: PlcVariableTrait;
+
     private readonly BlockCategory = 'PFS';
 
     private readonly blockIconHtml = `<svg viewBox="0 0 24 24">
@@ -14,8 +17,9 @@ export class PfsSensor implements EditorSetupable {
 
     private readonly componentType = 'pfs-sensor';
 
-    constructor(editor: Editor) {
+    constructor(editor: Editor, plcVariableTrait: PlcVariableTrait) {
         this.editor = editor;
+        this.plcVariableTrait = plcVariableTrait
     }
 
 
@@ -46,33 +50,17 @@ export class PfsSensor implements EditorSetupable {
                 }
                 return false;
             },
-            model: {
-              defaults: {
-                traits: [
-                  // Strings are automatically converted to text types
-                  'name', // Same as: { type: 'text', name: 'name' }
-                  'placeholder',
-                  {
-                    type: 'select', // Type of the trait
-                    name: 'type', // (required) The name of the attribute/property to use on component
-                    label: 'Type', // The label you will see in Settings
-                    options: [
-                      { id: 'text', label: 'Text' },
-                      { id: 'email', label: 'Email' },
-                      { id: 'password', label: 'Password' },
-                      { id: 'number', label: 'Number' },
-                    ],
-                  },
-                  {
-                    type: 'checkbox',
-                    name: 'required',
-                  },
-                ],
-                // As by default, traits are bound to attributes, so to define
-                // their initial value we can use attributes
-                attributes: { type: 'text', required: true },
+              model: {
+                defaults: {
+                  traits: [
+                    {
+                      type: this.plcVariableTrait.traitType,
+                      name: this.plcVariableTrait.traitType,
+                      label: 'Address',
+                    },
+                  ],
+                },
               },
-            },
           });
     }
 }
