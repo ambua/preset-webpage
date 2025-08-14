@@ -13,7 +13,6 @@ export class PlcVariableTrait implements EditorSetupable {
 
     setup(): void {
         this.editor.Traits.addType(this.traitType, {
-            noLabel: true,
             events: { input: 'onEvent', change: 'onEvent' },
 
             // Render a simple input and wire listeners directly
