@@ -1,5 +1,6 @@
 import { Editor } from "grapesjs";
 import { EditorSetupable } from "../Common/EditorSetupable";
+import { PlcVariableData } from "../AttributeData/PlcVariableData";
 
 export class PlcVariableTrait implements EditorSetupable {
     editor: Editor;
@@ -22,16 +23,6 @@ export class PlcVariableTrait implements EditorSetupable {
               input.placeholder = 'Insert a PLC address';
               input.value = trait.getValue?.() || '';
 
-              const pushUpdate = () => {
-                const plcVariable = input.value || '';
-                const data = { plcVariable };
-                component.addAttributes({ adrianVar: JSON.stringify(data) });
-                trait.setValue?.(plcVariable);
-              };
-
-              input.addEventListener('input', pushUpdate);
-              input.addEventListener('change', pushUpdate);
-
               return input;
             },
 
@@ -39,21 +30,23 @@ export class PlcVariableTrait implements EditorSetupable {
             onEvent({ elInput, component, trait }: { elInput: HTMLElement; component: any; trait: any }) {
               const inputEl = elInput as HTMLInputElement;
               const plcVariable = inputEl.value || '';
-              const data = { plcVariable };
-              component.addAttributes({ adrianVar: JSON.stringify(data) });
-              trait.setValue?.(plcVariable);
+              const data: PlcVariableData = new PlcVariableData({
+                name: 'someName',
+                address: Number(plcVariable) || 0,
+              });
+              component.addAttributes({ [PlcVariableData.attributeName]: JSON.stringify(data) });
             },
 
             // Keep the input in sync if the component updates
             onUpdate({ elInput, component }: { elInput: HTMLElement; component: any }) {
               const inputEl = elInput as HTMLInputElement;
               const attrs = component.getAttributes?.() || {};
-              const raw = attrs.adrianVar;
+              const raw = attrs[PlcVariableData.attributeName];
               if (typeof raw === 'string') {
                 try {
                   const parsed = JSON.parse(raw);
-                  if (parsed && typeof parsed.plcVariable === 'string') {
-                    inputEl.value = parsed.plcVariable;
+                  if (parsed && typeof parsed.address === 'number') {
+                    inputEl.value = String(parsed.address);
                   }
                 } catch {}
               }
