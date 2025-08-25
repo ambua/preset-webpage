@@ -17,12 +17,10 @@ export class PlcVariableTrait implements EditorSetupable {
             events: { input: 'onEvent', change: 'onEvent' },
 
             // Render a simple input and wire listeners directly
-            createInput({ component, trait }: { component: any; trait: any }) {
+            createInput({ component }: { component: any; }) {
               const input = document.createElement('input');
               input.className = 'plc-variable__input';
               input.placeholder = 'Insert a PLC address';
-              input.value = trait.getValue?.() || '';
-
               return input;
             },
 
